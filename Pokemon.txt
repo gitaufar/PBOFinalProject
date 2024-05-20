@@ -1,0 +1,6 @@
+Dryon Es 2 1 29 10
+diglet Tanah 1 1 100 0
+Pigeot angin 1 1 100 0
+Charizard Api 1 1 100 0
+Blaster Es 1 1 100 0
+Parrot angin 1 1 100 0
