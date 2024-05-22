@@ -43,14 +43,14 @@ public class Gui {
 
     //home base awal
     public JPanel homeBasePanel = new JPanel(null);
-    public ImageIcon homeImage = new ImageIcon();
+    public ImageIcon homeImage = new ImageIcon(this.getClass().getResource("Homebaseinside.png"));
     public JLabel homeBG = new JLabel();
     public JButton evolusi = new JButton("Evolusi");
     public JButton heal = new JButton("Heal");
     public JButton levelUp = new JButton("Level up");
     //home base akhir
 
-    public void select(Gui gui, Player player) {
+    public void heal(Gui gui, Player player) {
         int plus = 0;
         for (int i = 0; i < player.ownedPokemon.size(); i++) {
             System.out.println((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase());
@@ -65,6 +65,45 @@ public class Gui {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     new HomeBase().healPokemon(player.ownedPokemon.get(index));
+                    gui.homeBasePanel.removeAll();
+                    gui.homeBasePanel.add(heal);
+                    gui.homeBasePanel.add(levelUp);
+                    gui.homeBasePanel.add(evolusi);
+                    gui.homeBasePanel.add(homeBG);
+                    gui.homeBasePanel.revalidate();
+                    gui.homeBasePanel.repaint();
+                    System.out.println(player.ownedPokemon.get(index).getNama());
+                }
+            });
+            gui.homeBasePanel.add(container);
+            plus += 100;
+            gui.homeBasePanel.revalidate();
+            gui.homeBasePanel.repaint();
+        }
+    }
+
+    public void levelUp(Gui gui, Player player) {
+        int plus = 0;
+        for (int i = 0; i < player.ownedPokemon.size(); i++) {
+            System.out.println((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase());
+            ImageIcon temp = new ImageIcon(this.getClass().getResource((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase()));
+            Image temp2 = temp.getImage();
+            ImageIcon scaled = new ImageIcon(temp2.getScaledInstance(70, 70, Image.SCALE_SMOOTH));
+            JLabel container = new JLabel();
+            container.setIcon(scaled);
+            container.setBounds(plus, 200, 70, 70);
+            final int index = i;
+            container.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    new HomeBase().levelUp(player.ownedPokemon.get(index));
+                    gui.homeBasePanel.removeAll();
+                    gui.homeBasePanel.add(heal);
+                    gui.homeBasePanel.add(levelUp);
+                    gui.homeBasePanel.add(evolusi);
+                    gui.homeBasePanel.add(homeBG);
+                    gui.homeBasePanel.revalidate();
+                    gui.homeBasePanel.repaint();
                     System.out.println(player.ownedPokemon.get(index).getNama());
                 }
             });
@@ -187,15 +226,23 @@ public class Gui {
         //new game akhir
 
         //home base awal
-        homeBG.setIcon(homeImage);
-        heal.setBounds(0, 0, 200, 100);
+        homeBG.setIcon(new ImageIcon(homeImage.getImage().getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_SMOOTH)));
+        homeBG.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        heal.setBounds(400, 0,200, 100);
         heal.addActionListener((e) -> {
-            select(this, a);
+            heal(this, a);
+            homeBasePanel.setComponentZOrder(homeBG, homeBasePanel.getComponentCount() - 1);
+        });
+        levelUp.setBounds(0, 0, 200, 100);
+        levelUp.addActionListener((e) -> {
+            levelUp(this, a);
+            homeBasePanel.setComponentZOrder(homeBG, homeBasePanel.getComponentCount() - 1);
         });
         homeBasePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         homeBasePanel.add(heal);
         homeBasePanel.add(evolusi);
         homeBasePanel.add(levelUp);
+        homeBasePanel.add(homeBG);
         homeBasePanel.setVisible(false);
         //home base akhir
 
