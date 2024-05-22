@@ -10,10 +10,10 @@ package pbo;
  */
 import java.io.*;
 import java.util.*;
+import GUI.*;
 
 
-public class Game {
-
+public class Game{
     public static void newGame(Player player) {
         Scanner input = new Scanner(System.in);
         int count = 1;
@@ -28,13 +28,14 @@ public class Game {
         player.add(ListPokemon.list.get(pilihan - 1));
     }
 
-    public static void loadFile(Player player) throws InterruptedException {
+    public static void loadFile(Gui gui,Player player) throws InterruptedException {
         try {
             File pokemon = new File("Pokemon.txt");
             File item = new File("itemSave.txt");
             Scanner scan = new Scanner(pokemon);
             System.out.println("Berhasil load game...");
-            Thread.sleep(1000);
+            gui.firstPanel.setVisible(false);
+            gui.homeBasePanel.setVisible(true);
             try {
                 Scanner scan2 = new Scanner(item);
                 while (scan2.hasNext()) {
@@ -51,7 +52,7 @@ public class Game {
 
         } catch (FileNotFoundException ex) {
             System.out.println("Belom ada file progress, otomatis memulai game dari awal");
-            newGame(player);
+            gui.newGame();
         }
     }
 
@@ -279,7 +280,7 @@ public class Game {
                 newGame(a);
             }
             case 2 -> {
-                loadFile(a);
+                loadFile(new Gui(),a);
             }
             default -> {
                 System.out.println("Otomatis new game karena opsi yang dipilih tidak ada");
