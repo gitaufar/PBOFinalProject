@@ -22,7 +22,6 @@ public class Gui {
     private JFrame frame;
     public static Player a = new Player();
     public static Map m = new HomeBase();
-    public int k = 0;
 
     //Layar awal mulai
     public ImageIcon firstImage = new ImageIcon(this.getClass().getResource("Homebase.png"));
@@ -53,7 +52,6 @@ public class Gui {
 
     public void select(Gui gui, Player player) {
         int plus = 0;
-        
         for (int i = 0; i < player.ownedPokemon.size(); i++) {
             System.out.println((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase());
             ImageIcon temp = new ImageIcon(this.getClass().getResource((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase()));
@@ -62,15 +60,16 @@ public class Gui {
             JLabel container = new JLabel();
             container.setIcon(scaled);
             container.setBounds(plus, 200, 70, 70);
+            final int index = i;
             container.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    new HomeBase().healPokemon(player.ownedPokemon.get(k));
-                    k++;
+                    new HomeBase().healPokemon(player.ownedPokemon.get(index));
+                    System.out.println(player.ownedPokemon.get(index).getNama());
                 }
             });
             gui.homeBasePanel.add(container);
-            plus += 20;
+            plus += 100;
             gui.homeBasePanel.revalidate();
             gui.homeBasePanel.repaint();
         }
@@ -115,8 +114,8 @@ public class Gui {
         ImageIcon scaled = new ImageIcon(image.getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_SMOOTH));
         firstBackground.setIcon(scaled);
         firstBackground.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        newGame = createImageButton(new ImageIcon(this.getClass().getResource("button.png")), "N E W  G A M E", 15, 200, 100);
-        loadGame = createImageButton(scaled, "L O A D  G A M E", 15, 200, 100);
+        newGame = createImageButton(new ImageIcon(this.getClass().getResource("RedButton.png")), "N E W  G A M E", 10, 200, 100);
+        loadGame = createImageButton(new ImageIcon(this.getClass().getResource("RedButton.png")), "L O A D  G A M E", 10, 200, 100);
         newGame.setBounds(550, 200, 200, 100);
         loadGame.setBounds(550, 400, 200, 100);
         newGame.addActionListener((e) -> {
@@ -201,9 +200,7 @@ public class Gui {
         //home base akhir
 
         //dungeon awal
-        
         //dungeon akhir
-        
         //menambah seluruh panel ke frame
         frame.add(firstPanel, BorderLayout.CENTER);
         frame.add(newPanel, BorderLayout.CENTER);
@@ -213,7 +210,6 @@ public class Gui {
 
     public static void main(String[] args) throws InterruptedException, CustomException {
         Gui g = new Gui();
-        a.add(ListPokemon.list.get(1));
     }
 
 }
