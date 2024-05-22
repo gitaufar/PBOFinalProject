@@ -11,6 +11,7 @@ package pbo;
 import java.io.*;
 import java.util.*;
 import GUI.*;
+import javax.swing.JLabel;
 
 
 public class Game{
@@ -84,7 +85,7 @@ public class Game{
     public static Pokemon selectPokemon(Player user) throws CustomException {
         Scanner input = new Scanner(System.in);
         while (true) {
-            System.out.println("Pilih Pokemon untuk bertarung:");
+            System.out.println();
             user.printOwned();
             int choice = input.nextInt();
             if (choice > 0 && choice <= user.ownedPokemon.size()) {

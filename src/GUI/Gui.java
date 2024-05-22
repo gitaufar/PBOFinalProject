@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import pbo.*;
 
@@ -20,6 +22,7 @@ public class Gui {
     private JFrame frame;
     public static Player a = new Player();
     public static Map m = new HomeBase();
+    public int k = 0;
 
     //Layar awal mulai
     public ImageIcon firstImage = new ImageIcon(this.getClass().getResource("Homebase.png"));
@@ -48,8 +51,29 @@ public class Gui {
     public JButton levelUp = new JButton("Level up");
     //home base akhir
 
-    public void select(Player player) {
-
+    public void select(Gui gui, Player player) {
+        int plus = 0;
+        
+        for (int i = 0; i < player.ownedPokemon.size(); i++) {
+            System.out.println((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase());
+            ImageIcon temp = new ImageIcon(this.getClass().getResource((player.ownedPokemon.get(i).getNama() + ".png").toLowerCase()));
+            Image temp2 = temp.getImage();
+            ImageIcon scaled = new ImageIcon(temp2.getScaledInstance(70, 70, Image.SCALE_SMOOTH));
+            JLabel container = new JLabel();
+            container.setIcon(scaled);
+            container.setBounds(plus, 200, 70, 70);
+            container.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    new HomeBase().healPokemon(player.ownedPokemon.get(k));
+                    k++;
+                }
+            });
+            gui.homeBasePanel.add(container);
+            plus += 20;
+            gui.homeBasePanel.revalidate();
+            gui.homeBasePanel.repaint();
+        }
     }
 
     public void newGame() {
@@ -60,12 +84,12 @@ public class Gui {
     public void battleArena(Player player) {
 
     }
-    
-    private JButton createImageButton(ImageIcon icon, String text, int fontSize,int width, int height) {
+
+    private JButton createImageButton(ImageIcon icon, String text, int fontSize, int width, int height) {
         JButton button = new JButton(text);
         button.setFont(new Font("Forte", Font.PLAIN, fontSize));
         Image image = icon.getImage();
-        ImageIcon scaled = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH)); 
+        ImageIcon scaled = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
         button.setIcon(scaled);
         button.setHorizontalTextPosition(JButton.CENTER);
         button.setVerticalTextPosition(JButton.CENTER);
@@ -76,6 +100,10 @@ public class Gui {
         return button;
     }
 
+    private void selectPokemon() {
+
+    }
+
     public Gui() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,13 +112,13 @@ public class Gui {
 
         //layar awal mulai
         Image image = firstImage.getImage();
-        ImageIcon scaled = new ImageIcon(image.getScaledInstance(frame.getWidth(),frame.getHeight(),Image.SCALE_SMOOTH));
+        ImageIcon scaled = new ImageIcon(image.getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_SMOOTH));
         firstBackground.setIcon(scaled);
         firstBackground.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        newGame = createImageButton(new ImageIcon(this.getClass().getResource("button.png")),"N E W  G A M E",15,200,100);
-        loadGame = createImageButton(scaled,"L O A D  G A M E",15,200,100);
-        newGame.setBounds(400, 200, 200, 100);
-        loadGame.setBounds(400, 400, 200, 100);
+        newGame = createImageButton(new ImageIcon(this.getClass().getResource("button.png")), "N E W  G A M E", 15, 200, 100);
+        loadGame = createImageButton(scaled, "L O A D  G A M E", 15, 200, 100);
+        newGame.setBounds(550, 200, 200, 100);
+        loadGame.setBounds(550, 400, 200, 100);
         newGame.addActionListener((e) -> {
             newGame();
         });
@@ -123,6 +151,7 @@ public class Gui {
                 a.add(ListPokemon.list.get(0));
                 a.setMap(new HomeBase());
                 newPanel.setVisible(false);
+                homeBasePanel.setVisible(true);
             }
         });
         pokemon2Panel.setIcon(scaledp2);
@@ -141,7 +170,7 @@ public class Gui {
         pokemon3Panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                a.add(ListPokemon.list.get(3));
+                a.add(ListPokemon.list.get(4));
                 a.setMap(new HomeBase());
                 newPanel.setVisible(false);
                 homeBasePanel.setVisible(true);
@@ -150,7 +179,7 @@ public class Gui {
         newPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         JLabel choose = new JLabel("Pilih pokemon awalan anda");
         choose.setFont(new Font("Forte", Font.PLAIN, 24));
-        choose.setBounds(270,300,500,100);
+        choose.setBounds(270, 300, 500, 100);
         newPanel.add(choose);
         newPanel.add(pokemon1Panel);
         newPanel.add(pokemon2Panel);
@@ -160,11 +189,21 @@ public class Gui {
 
         //home base awal
         homeBG.setIcon(homeImage);
+        heal.setBounds(0, 0, 200, 100);
+        heal.addActionListener((e) -> {
+            select(this, a);
+        });
+        homeBasePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         homeBasePanel.add(heal);
         homeBasePanel.add(evolusi);
         homeBasePanel.add(levelUp);
+        homeBasePanel.setVisible(false);
         //home base akhir
 
+        //dungeon awal
+        
+        //dungeon akhir
+        
         //menambah seluruh panel ke frame
         frame.add(firstPanel, BorderLayout.CENTER);
         frame.add(newPanel, BorderLayout.CENTER);
@@ -174,6 +213,7 @@ public class Gui {
 
     public static void main(String[] args) throws InterruptedException, CustomException {
         Gui g = new Gui();
+        a.add(ListPokemon.list.get(1));
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package pbo;
 
+import GUI.Gui;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
